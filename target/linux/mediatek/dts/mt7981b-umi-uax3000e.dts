@@ -22,9 +22,8 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-	memory@40000000 {
-		device_type = "memory";
-		reg = <0 0x40000000 0 0x40000000>;
+	memory {
+		reg = <0 0x40000000 0 0x40000000>; // 1GB DDR4
 	};
 
 	reg_3p3v: regulator-3p3v {
@@ -41,17 +40,17 @@
 
 		led_red: red {
 			label = "red:power";
-			gpios = <&pio 11 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 523 GPIO_ACTIVE_LOW>;
 		};
 
 		led_green: green {
 			label = "green:wan";
-			gpios = <&pio 34 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 546 GPIO_ACTIVE_LOW>;
 		};
 
 		led_blue: blue {
 			label = "blue:status";
-			gpios = <&pio 35 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 547 GPIO_ACTIVE_LOW>;
 		};
 	};
 
@@ -61,7 +60,7 @@
 		reset {
 			label = "reset";
 			linux,code = <KEY_RESTART>;
-			gpios = <&pio 1 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 513 GPIO_ACTIVE_LOW>;
 		};
 	};
 };
@@ -153,7 +152,12 @@
 &mmc0 {
 	bus-width = <8>;
 	cap-mmc-highspeed;
-	max-frequency = <52000000>;
+	max-frequency = <200000000>;
+	cap-mmc-hs200-1_8v;
+	cap-mmc-hs400-1_8v;
+	mmc-hs200-1_8v;
+	mmc-hs400-1_8v;
+	hs400-ds-delay = <0x14014>;
 	no-sd;
 	no-sdio;
 	non-removable;
@@ -180,84 +184,6 @@
 	};
 };
 
-&spi0 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi_flash_pins>;
-	
-	spi_nand: flash@0 {
-		compatible = "spi-nand";
-		reg = <0>;
-		spi-max-frequency = <52000000>;
-		
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-			
-			partition@0 {
-				label = "bl2";
-				reg = <0x000000 0x100000>;
-				read-only;
-			};
-			
-			partition@100000 {
-				label = "u-boot-env";
-				reg = <0x100000 0x80000>;
-			};
-			
-			factory: partition@180000 {
-				label = "factory";
-				reg = <0x180000 0x200000>;
-				read-only;
-				
-				nvmem-layout {
-					compatible = "fixed-layout";
-					#address-cells = <1>;
-					#size-cells = <1>;
-					
-					eeprom_factory_0: eeprom@0 {
-						reg = <0x0 0x1000>;
-					};
-					
-					macaddr_factory_24: macaddr@24 {
-						reg = <0x24 0x6>;
-					};
-					
-					macaddr_factory_2a: macaddr@2a {
-						reg = <0x2a 0x6>;
-					};
-					
-					phy_calibration: phy-calibration@8dc {
-						reg = <0x8dc 0x10>;
-					};
-				};
-			};
-			
-			partition@380000 {
-				label = "fip";
-				reg = <0x380000 0x200000>;
-				read-only;
-			};
-			
-			partition@580000 {
-				label = "ubi";
-				reg = <0x580000 0x7200000>;
-			};
-		};
-	};
-};
-
-&gmac0 {
-	nvmem-cells = <&macaddr_factory_2a>;
-	nvmem-cell-names = "mac-address";
-};
-
-&gmac1 {
-	nvmem-cells = <&macaddr_factory_24>;
-	nvmem-cell-names = "mac-address";
-};
-
 &uart0 {
 	status = "okay";
 };
@@ -279,3 +205,4 @@
 &xhci {
 	status = "okay";
 };
+
