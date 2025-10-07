@@ -87,6 +87,7 @@ platform_do_upgrade() {
 	bananapi,bpi-r4-poe|\
 	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
+	umi,uax3000e|\
 	cudy,tr3000-v1-ubootmod|\
 	gatonetworks,gdsp|\
 	h3c,magic-nx30-pro|\
@@ -250,6 +251,7 @@ platform_check_image() {
 	bananapi,bpi-r4-poe|\
 	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
+	umi,uax3000e|\
 	cudy,tr3000-v1-ubootmod|\
 	gatonetworks,gdsp|\
 	h3c,magic-nx30-pro|\
@@ -304,6 +306,7 @@ platform_copy_config() {
 	bananapi,bpi-r4-2g5|\
 	bananapi,bpi-r4-poe|\
 	cmcc,rax3000m|\
+	umi,uax3000e|\
 	gatonetworks,gdsp|\
 	mediatek,mt7988a-rfb)
 		if [ "$CI_METHOD" = "emmc" ]; then
