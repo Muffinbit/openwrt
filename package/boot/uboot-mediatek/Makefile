@@ -301,7 +301,6 @@ define U-Boot/mt7981_umi_uax3000e
   BL2_SOC:=mt7981
   BL2_DDRTYPE:=ddr4
   DEPENDS:=+trusted-firmware-a-mt7981-emmc-ddr4
-  endef
 endef
 
 define U-Boot/mt7981_cudy_tr3000-v1
