@@ -185,9 +185,9 @@
 +_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       \033[33m$ver\033[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,206 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/dts-v1/;
+@@ -1,206 +1,159 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/input/input.h>
 +#include <dt-bindings/leds/common.h>
@@ -212,15 +212,6 @@
 +
 +	memory {
 +		reg = <0 0x40000000 0 0x40000000>; // 1GB DDR4
-+	};
-+
-+	reg_3p3v: regulator-3p3v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "fixed-3.3V";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-boot-on;
-+		regulator-always-on;
 +	};
 +
 +	leds {
@@ -255,44 +246,56 @@
 +
 +&eth {
 +	status = "okay";
++};
 +
-+	gmac0: mac@0 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <0>;
-+		phy-mode = "2500base-x";
++&wifi {
++	status = "okay";
++};
 +
-+		fixed-link {
-+			speed = <2500>;
-+			full-duplex;
-+			pause;
++&uart0 {
++	status = "okay";
++};
++
++&xhci {
++	status = "okay";
++};
++
++&usb_phy {
++	status = "okay";
++};
++
++&mmc0 {
++	bus-width = <8>;
++	cap-mmc-highspeed;
++	max-frequency = <200000000>;
++	cap-mmc-hs200-1_8v;
++	cap-mmc-hs400-1_8v;
++	mmc-hs200-1_8v;
++	mmc-hs400-1_8v;
++	hs400-ds-delay = <0x14014>;
++	no-sd;
++	no-sdio;
++	non-removable;
++	pinctrl-names = "default", "state_uhs";
++	pinctrl-0 = <&mmc0_pins_default>;
++	pinctrl-1 = <&mmc0_pins_uhs>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
++
++&pio {
++	mmc0_pins_default: mmc0-pins-default {
++		mux {
++			function = "flash";
++			groups = "emmc_45";
 +		};
 +	};
 +
-+	gmac1: mac@1 {
-+		compatible = "mediatek,eth-mac";
-+		reg = <1>;
-+		phy-mode = "gmii";
-+		phy-handle = <&int_gbe_phy>;
-+	};
-+};
-+
-+&mdio_bus {
-+	int_gbe_phy: ethernet-phy@0 {
-+		compatible = "ethernet-phy-id03a2.9461";
-+		reg = <0>;
-+		phy-mode = "gmii";
-+		nvmem-cells = <&phy_calibration>;
-+		nvmem-cell-names = "phy-cal-data";
-+	};
-+
-+	switch: switch@1f {
-+		compatible = "mediatek,mt7531";
-+		reg = <31>;
-+		reset-gpios = <&pio 39 GPIO_ACTIVE_HIGH>;
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+		interrupt-parent = <&pio>;
-+		interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
++	mmc0_pins_uhs: mmc0-pins-uhs {
++		mux {
++			function = "flash";
++			groups = "emmc_45";
++		};
 +	};
 +};
 +
@@ -337,59 +340,12 @@
 +	status = "okay";
 +};
 +
-+&mmc0 {
-+	bus-width = <8>;
-+	cap-mmc-highspeed;
-+	max-frequency = <200000000>;
-+	cap-mmc-hs200-1_8v;
-+	cap-mmc-hs400-1_8v;
-+	mmc-hs200-1_8v;
-+	mmc-hs400-1_8v;
-+	hs400-ds-delay = <0x14014>;
-+	no-sd;
-+	no-sdio;
-+	non-removable;
-+	pinctrl-names = "default", "state_uhs";
-+	pinctrl-0 = <&mmc0_pins_default>;
-+	pinctrl-1 = <&mmc0_pins_uhs>;
-+	vmmc-supply = <&reg_3p3v>;
-+	status = "okay";
-+};
-+
-+&pio {
-+	mmc0_pins_default: mmc0-pins-default {
-+		mux {
-+			function = "flash";
-+			groups = "emmc_45";
-+		};
-+	};
-+
-+	mmc0_pins_uhs: mmc0-pins-uhs {
-+		mux {
-+			function = "flash";
-+			groups = "emmc_45";
-+		};
-+	};
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&usb_phy {
-+	status = "okay";
-+};
-+
-+&watchdog {
-+	status = "okay";
-+};
-+
 +&wifi {
-+	status = "okay";
 +	nvmem-cells = <&eeprom_factory_0>;
 +	nvmem-cell-names = "eeprom";
 +};
 +
-+&xhci {
-+	status = "okay";
-+};
++/* Removed redundant mdio_bus definition - already defined in mt7981b.dtsi */
++/* Removed redundant gmac0/gmac1 definitions - already defined in mt7981b.dtsi */
++/* Removed reg_3p3v definition - already defined in mt7981b.dtsi */
++/* Removed redundant int_gbe_phy definition - already defined in mt7981b.dtsi */
