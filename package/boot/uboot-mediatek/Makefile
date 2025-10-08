@@ -301,10 +301,6 @@ define U-Boot/mt7981_umi_uax3000e
   BL2_SOC:=mt7981
   BL2_DDRTYPE:=ddr4
   DEPENDS:=+trusted-firmware-a-mt7981-emmc-ddr4
-
-  define Build/Prepare
-	$(call Build/Prepare/Default)
-	$(CP) $(TOPDIR)/target/linux/mediatek/dts/mt7981b-umi-uax3000e.dts $(PKG_BUILD_DIR)/arch/arm/dts/
   endef
 endef
 
