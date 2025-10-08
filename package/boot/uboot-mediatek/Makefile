@@ -295,7 +295,7 @@ define U-Boot/mt7981_umi_uax3000e
   NAME:=UMI UAX3000E
   BUILD_SUBTARGET:=filogic
   BUILD_DEVICES:=umi_uax3000e
-  UBOOT_CONFIG:=mt7981_umi_uax3000e
+  UBOOT_CONFIG:=mt7981_rfb
   UBOOT_IMAGE:=u-boot.fip
   BL2_BOOTDEV:=emmc
   BL2_SOC:=mt7981
