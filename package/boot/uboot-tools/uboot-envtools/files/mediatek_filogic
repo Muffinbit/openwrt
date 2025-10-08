@@ -65,7 +65,6 @@ bananapi,bpi-r3-mini|\
 bananapi,bpi-r4|\
 bananapi,bpi-r4-poe|\
 cmcc,rax3000m|\
-umi,uax3000e|\
 jdcloud,re-cp-03)
 	. /lib/upgrade/fit.sh
 	export_fitblk_bootdev
