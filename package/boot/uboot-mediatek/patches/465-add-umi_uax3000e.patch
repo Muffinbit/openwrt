@@ -344,8 +344,3 @@
 +	nvmem-cells = <&eeprom_factory_0>;
 +	nvmem-cell-names = "eeprom";
 +};
-+
-+/* Removed redundant mdio_bus definition - already defined in mt7981b.dtsi */
-+/* Removed redundant gmac0/gmac1 definitions - already defined in mt7981b.dtsi */
-+/* Removed reg_3p3v definition - already defined in mt7981b.dtsi */
-+/* Removed redundant int_gbe_phy definition - already defined in mt7981b.dtsi */
