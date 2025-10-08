@@ -185,9 +185,9 @@
 +_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       \033[33m$ver\033[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,159 @@
-// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-/dts-v1/;
+@@ -0,0 +1,157 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/input/input.h>
 +#include <dt-bindings/leds/common.h>
