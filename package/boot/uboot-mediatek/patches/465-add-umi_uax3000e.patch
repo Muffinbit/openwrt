@@ -118,6 +118,7 @@
 +		};
 +	};
 +};
++
 --- /dev/null
 +++ b/configs/mt7981_umi_uax3000e_defconfig
 @@ -0,0 +1,123 @@
@@ -245,6 +246,7 @@
 +CONFIG_LZO=y
 +CONFIG_ZSTD=y
 +CONFIG_HEXDUMP=y
++
 --- /dev/null
 +++ b/defenvs/umi_uax3000e_env
 @@ -0,0 +1,55 @@
