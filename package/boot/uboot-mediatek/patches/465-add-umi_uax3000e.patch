@@ -1,7 +1,8 @@
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,126 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+@@ -0,0 +1,118 @@
++// SPDX-License-Identifier: GPL-2.0
++
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/input/input.h>
@@ -118,10 +119,9 @@
 +		};
 +	};
 +};
-+
 --- /dev/null
 +++ b/configs/mt7981_umi_uax3000e_defconfig
-@@ -0,0 +1,123 @@
+@@ -0,0 +1,124 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_HAS_NONCACHED_MEMORY=y
 +CONFIG_POSITION_INDEPENDENT=y
@@ -246,7 +246,6 @@
 +CONFIG_LZO=y
 +CONFIG_ZSTD=y
 +CONFIG_HEXDUMP=y
-+
 --- /dev/null
 +++ b/defenvs/umi_uax3000e_env
 @@ -0,0 +1,55 @@
