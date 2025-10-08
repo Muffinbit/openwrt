@@ -185,7 +185,7 @@
 +_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       \033[33m$ver\033[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,157 @@
+@@ -0,0 +1,149 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
@@ -244,7 +244,7 @@
 +	};
 +};
 +
-+&eth {
++&gmac0 {
 +	status = "okay";
 +};
 +
@@ -299,38 +299,10 @@
 +	};
 +};
 +
-+&switch {
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@0 {
-+			reg = <0>;
-+			label = "lan1";
-+		};
-+
-+		port@1 {
-+			reg = <1>;
-+			label = "lan2";
-+		};
-+
-+		port@2 {
-+			reg = <2>;
-+			label = "lan3";
-+		};
-+
-+		port@6 {
-+			reg = <6>;
-+			ethernet = <&gmac0>;
-+			phy-mode = "2500base-x";
-+
-+			fixed-link {
-+				speed = <2500>;
-+				full-duplex;
-+				pause;
-+			};
-+		};
-+	};
++&gsw {
++	mediatek,mdio = <&mdio>;
++	mediatek,portmap = "llllw";
++	mediatek,mdio_master_pinmux = <0>;
 +};
 +
 +&hnat {
@@ -338,9 +310,4 @@
 +	mtketh-lan = "eth0";
 +	mtketh-max-gmac = <2>;
 +	status = "okay";
-+};
-+
-+&wifi {
-+	nvmem-cells = <&eeprom_factory_0>;
-+	nvmem-cell-names = "eeprom";
 +};
