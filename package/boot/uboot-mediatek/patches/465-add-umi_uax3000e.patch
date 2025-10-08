@@ -1,4 +1,124 @@
 --- /dev/null
++++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
+@@ -0,0 +1,126 @@
++// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
++/dts-v1/;
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++#include "mt7981b.dtsi"
++
++/ {
++	model = "UMI UAX3000E eMMC version";
++	compatible = "umi,uax3000e", "mediatek,mt7981";
++	
++	aliases {
++		led-boot = &led_red;
++		led-failsafe = &led_red;
++		led-running = &led_green;
++		led-upgrade = &led_blue;
++		serial0 = &uart0;
++	};
++
++	chosen {
++		bootargs = "root=PARTLABEL=rootfs rootwait rootfstype=squashfs,f2fs";
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory {
++		reg = <0 0x40000000 0 0x40000000>;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++
++		led_red: red {
++			label = "red:power";
++			gpios = <&pio 523 GPIO_ACTIVE_LOW>;
++		};
++
++		led_green: green {
++			label = "green:wan";
++			gpios = <&pio 546 GPIO_ACTIVE_LOW>;
++		};
++
++		led_blue: blue {
++			label = "blue:status";
++			gpios = <&pio 547 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	keys {
++		compatible = "gpio-keys";
++
++		reset {
++			label = "reset";
++			linux,code = <KEY_RESTART>;
++			gpios = <&pio 513 GPIO_ACTIVE_LOW>;
++		};
++	};
++};
++
++&wifi@18000000 {
++	status = "okay";
++};
++
++&serial@11002000 {
++	status = "okay";
++};
++
++mmc0: mmc@11230000 {
++	compatible = "mediatek,mt7981-mmc";
++	reg = <0 0x11230000 0 0x1000>;
++	interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&infracfg CLK_INFRA_MSDC_CK>,
++		 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
++		 <&infracfg CLK_INFRA_MSDC_66M_CK>,
++		 <&infracfg CLK_INFRA_MSDC_133M_CK>;
++	clock-names = "source", "hclk", "axi_cg", "ahb_cg";
++	bus-width = <8>;
++	max-frequency = <200000000>;
++	cap-mmc-highspeed;
++	mmc-hs200-1_8v;
++	mmc-hs400-1_8v;
++	hs400-ds-delay = <0x14014>;
++	cap-mmc-hs200-1_8v;
++	cap-mmc-hs400-1_8v;
++	no-sd;
++	no-sdio;
++	non-removable;
++	pinctrl-names = "default", "state_uhs";
++	pinctrl-0 = <&mmc0_pins_default>;
++	pinctrl-1 = <&mmc0_pins_uhs>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
++
++reg_3p3v: regulator-3p3v {
++	compatible = "regulator-fixed";
++	regulator-name = "fixed-3.3V";
++	regulator-min-microvolt = <3300000>;
++	regulator-max-microvolt = <3300000>;
++	regulator-boot-on;
++	regulator-always-on;
++};
++
++&pio {
++	mmc0_pins_default: mmc0-pins-default {
++		mux {
++			function = "flash";
++			groups = "emmc_45";
++		};
++	};
++
++	mmc0_pins_uhs: mmc0-pins-uhs {
++		mux {
++			function = "flash";
++			groups = "emmc_45";
++		};
++	};
++};
+--- /dev/null
 +++ b/configs/mt7981_umi_uax3000e_defconfig
 @@ -0,0 +1,123 @@
 +CONFIG_ARM=y
@@ -125,129 +245,6 @@
 +CONFIG_LZO=y
 +CONFIG_ZSTD=y
 +CONFIG_HEXDUMP=y
-+
---- /dev/null
-+++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,126 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/dts-v1/;
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
-+#include "mt7981b.dtsi"
-+
-+/ {
-+	model = "UMI UAX3000E eMMC version";
-+	compatible = "umi,uax3000e", "mediatek,mt7981";
-+	
-+	aliases {
-+		led-boot = &led_red;
-+		led-failsafe = &led_red;
-+		led-running = &led_green;
-+		led-upgrade = &led_blue;
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		bootargs = "root=PARTLABEL=rootfs rootwait rootfstype=squashfs,f2fs";
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	memory {
-+		reg = <0 0x40000000 0 0x40000000>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led_red: red {
-+			label = "red:power";
-+			gpios = <&pio 523 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		led_green: green {
-+			label = "green:wan";
-+			gpios = <&pio 546 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		led_blue: blue {
-+			label = "blue:status";
-+			gpios = <&pio 547 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	keys {
-+		compatible = "gpio-keys";
-+
-+		reset {
-+			label = "reset";
-+			linux,code = <KEY_RESTART>;
-+			gpios = <&pio 513 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+};
-+
-+&wifi@18000000 {
-+	status = "okay";
-+};
-+
-+&serial@11002000 {
-+	status = "okay";
-+};
-+
-+mmc0: mmc@11230000 {
-+	compatible = "mediatek,mt7981-mmc";
-+	reg = <0 0x11230000 0 0x1000>;
-+	interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
-+	clocks = <&infracfg CLK_INFRA_MSDC_CK>,
-+		 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
-+		 <&infracfg CLK_INFRA_MSDC_66M_CK>,
-+		 <&infracfg CLK_INFRA_MSDC_133M_CK>;
-+	clock-names = "source", "hclk", "axi_cg", "ahb_cg";
-+	bus-width = <8>;
-+	max-frequency = <200000000>;
-+	cap-mmc-highspeed;
-+	mmc-hs200-1_8v;
-+	mmc-hs400-1_8v;
-+	hs400-ds-delay = <0x14014>;
-+	cap-mmc-hs200-1_8v;
-+	cap-mmc-hs400-1_8v;
-+	no-sd;
-+	no-sdio;
-+	non-removable;
-+	pinctrl-names = "default", "state_uhs";
-+	pinctrl-0 = <&mmc0_pins_default>;
-+	pinctrl-1 = <&mmc0_pins_uhs>;
-+	vmmc-supply = <&reg_3p3v>;
-+	status = "okay";
-+};
-+
-+reg_3p3v: regulator-3p3v {
-+	compatible = "regulator-fixed";
-+	regulator-name = "fixed-3.3V";
-+	regulator-min-microvolt = <3300000>;
-+	regulator-max-microvolt = <3300000>;
-+	regulator-boot-on;
-+	regulator-always-on;
-+};
-+
-+&pio {
-+	mmc0_pins_default: mmc0-pins-default {
-+		mux {
-+			function = "flash";
-+			groups = "emmc_45";
-+		};
-+	};
-+
-+	mmc0_pins_uhs: mmc0-pins-uhs {
-+		mux {
-+			function = "flash";
-+			groups = "emmc_45";
-+		};
-+	};
-+};
-+
-+
 --- /dev/null
 +++ b/defenvs/umi_uax3000e_env
 @@ -0,0 +1,55 @@
