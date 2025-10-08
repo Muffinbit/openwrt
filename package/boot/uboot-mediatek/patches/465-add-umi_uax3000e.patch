@@ -48,6 +48,7 @@
 +CONFIG_CMD_MMC=y
 +CONFIG_CMD_PART=y
 +CONFIG_CMD_PCI=y
++CONFIG_CMD_USB=y
 +CONFIG_CMD_TFTPSRV=y
 +CONFIG_CMD_RARP=y
 +CONFIG_CMD_CDP=y
@@ -93,7 +94,7 @@
 +CONFIG_LED_BLINK=y
 +CONFIG_LED_GPIO=y
 +CONFIG_SUPPORT_EMMC_BOOT=y
-+CONFIG_MMC_HS400_SUPPORT=y
++CONFIG_MMC_HS200_SUPPORT=y
 +CONFIG_MMC_MTK=y
 +CONFIG_PHY_FIXED=y
 +CONFIG_MEDIATEK_ETH=y
@@ -133,7 +134,7 @@
 +console=earlycon=uart8250,mmio32,0x11002000 console=ttyS0
 +bootargs=root=/dev/fit0 rootwait
 +bootcmd=if pstore check ; then run boot_recovery ; else run boot_emmc ; fi
-+bootconf=config-1#mt7981-umi-uax3000e
++bootconf=config-1#mt7981b-umi-uax3000e
 +bootdelay=0
 +bootfile=openwrt-mediatek-filogic-umi_uax3000e-initramfs-recovery.itb
 +bootfile_bl2=openwrt-mediatek-filogic-umi_uax3000e-emmc-preloader.bin
@@ -144,7 +145,7 @@
 +bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
 +bootmenu_default=0
 +bootmenu_delay=0
-+bootmenu_title=OpenWrt for UMI UAX3000E
++bootmenu_title=      \033[0;34m( ( ( \033[1;39mOpenWrt\033[0;34m ) ) )  \033[0;36m[eMMC]\033[0m
 +bootmenu_0=Initialize environment.=run _firstboot
 +bootmenu_0d=Run default boot command.=run boot_default
 +bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
@@ -152,8 +153,8 @@
 +bootmenu_3=Boot recovery system from eMMC.=run boot_recovery ; run bootmenu_confirm_return
 +bootmenu_4=Load production system via TFTP then write to eMMC.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_production ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
 +bootmenu_5=Load recovery system via TFTP then write to eMMC.=setenv noboot 1 ; setenv replacevol 1 ; run boot_tftp_recovery ; setenv noboot ; setenv replacevol ; run bootmenu_confirm_return
-+bootmenu_6=Load BL31+U-Boot FIP via TFTP then write to eMMC.=run boot_tftp_write_fip ; run bootmenu_confirm_return
-+bootmenu_7=Load BL2 preloader via TFTP then write to eMMC.=run boot_tftp_write_bl2 ; run bootmenu_confirm_return
++bootmenu_6=\033[31mLoad BL31+U-Boot FIP via TFTP then write to eMMC.\033[0m=run boot_tftp_write_fip ; run bootmenu_confirm_return
++bootmenu_7=\033[31mLoad BL2 preloader via TFTP then write to eMMC.\033[0m=run boot_tftp_write_bl2 ; run bootmenu_confirm_return
 +bootmenu_8=Reboot.=reset
 +bootmenu_9=Reset all settings to factory defaults.=run reset_factory ; reset
 +boot_first=if button reset ; then led $bootled_rec on ; run boot_tftp_recovery ; setenv flag_recover 1 ; run boot_default ; fi ; bootmenu
@@ -181,10 +182,10 @@
 +_init_env=setenv _init_env ; setenv _create_env ; saveenv ; saveenv
 +_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
 +_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
-+_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title $ver"
++_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       \033[33m$ver\033[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,218 @@
+@@ -0,0 +1,219 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
@@ -392,3 +393,5 @@
 +&xhci {
 +	status = "okay";
 +};
++
++
