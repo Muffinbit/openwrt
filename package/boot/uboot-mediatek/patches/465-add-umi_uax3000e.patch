@@ -185,7 +185,7 @@
 +_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       \033[33m$ver\033[0m"
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,149 @@
+@@ -0,0 +1,126 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
@@ -211,7 +211,7 @@
 +	};
 +
 +	memory {
-+		reg = <0 0x40000000 0 0x40000000>; // 1GB DDR4
++		reg = <0 0x40000000 0 0x40000000>;
 +	};
 +
 +	leds {
@@ -244,35 +244,31 @@
 +	};
 +};
 +
-+&gmac0 {
++&wifi@18000000 {
 +	status = "okay";
 +};
 +
-+&wifi {
++&serial@11002000 {
 +	status = "okay";
 +};
 +
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&xhci {
-+	status = "okay";
-+};
-+
-+&usb_phy {
-+	status = "okay";
-+};
-+
-+&mmc0 {
++mmc0: mmc@11230000 {
++	compatible = "mediatek,mt7981-mmc";
++	reg = <0 0x11230000 0 0x1000>;
++	interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&infracfg CLK_INFRA_MSDC_CK>,
++		 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
++		 <&infracfg CLK_INFRA_MSDC_66M_CK>,
++		 <&infracfg CLK_INFRA_MSDC_133M_CK>;
++	clock-names = "source", "hclk", "axi_cg", "ahb_cg";
 +	bus-width = <8>;
-+	cap-mmc-highspeed;
 +	max-frequency = <200000000>;
-+	cap-mmc-hs200-1_8v;
-+	cap-mmc-hs400-1_8v;
++	cap-mmc-highspeed;
 +	mmc-hs200-1_8v;
 +	mmc-hs400-1_8v;
 +	hs400-ds-delay = <0x14014>;
++	cap-mmc-hs200-1_8v;
++	cap-mmc-hs400-1_8v;
 +	no-sd;
 +	no-sdio;
 +	non-removable;
@@ -281,6 +277,15 @@
 +	pinctrl-1 = <&mmc0_pins_uhs>;
 +	vmmc-supply = <&reg_3p3v>;
 +	status = "okay";
++};
++
++reg_3p3v: regulator-3p3v {
++	compatible = "regulator-fixed";
++	regulator-name = "fixed-3.3V";
++	regulator-min-microvolt = <3300000>;
++	regulator-max-microvolt = <3300000>;
++	regulator-boot-on;
++	regulator-always-on;
 +};
 +
 +&pio {
@@ -297,17 +302,4 @@
 +			groups = "emmc_45";
 +		};
 +	};
-+};
-+
-+&gsw {
-+	mediatek,mdio = <&mdio>;
-+	mediatek,portmap = "llllw";
-+	mediatek,mdio_master_pinmux = <0>;
-+};
-+
-+&hnat {
-+	mtketh-wan = "eth1";
-+	mtketh-lan = "eth0";
-+	mtketh-max-gmac = <2>;
-+	status = "okay";
 +};
