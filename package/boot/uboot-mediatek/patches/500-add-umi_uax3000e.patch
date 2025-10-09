@@ -233,8 +233,8 @@ Subject: [PATCH] add support for UMI UAX3000E
 +bootmenu_confirm_return=askenv - Press ENTER to return to menu ; bootmenu 60
 +bootmenu_default=0
 +bootmenu_delay=0
-+bootmenu_title=      [0;34m( ( ( [1;39mOpenWrt[0;34m ) ) )  [0;36m[UMI UAX3000E][0m
-+bootmenu_0=Initialize environment.=run _firstboot
++bootmenu_title=OpenWrt [UMI UAX3000E]
++bootmenu_0=Initialize environment=run _firstboot
 +bootmenu_0d=Run default boot command.=run boot_default
 +bootmenu_1=Boot system via TFTP.=run boot_tftp ; run bootmenu_confirm_return
 +bootmenu_2=Boot production system from eMMC.=run boot_production ; run bootmenu_confirm_return
@@ -267,5 +267,5 @@ Subject: [PATCH] add support for UMI UAX3000E
 +emmc_write_production=part start mmc 0 $part_default part_addr && part size mmc 0 $part_default part_size && run mmc_write_vol
 +emmc_write_recovery=part start mmc 0 $part_recovery part_addr && part size mmc 0 $part_recovery part_size && run mmc_write_vol
 +_firstboot=setenv _firstboot ; run _switch_to_menu ; run _init_env ; run boot_first
-+_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d ; run _bootmenu_update_title
-+_bootmenu_update_title=setenv _bootmenu_update_title ; setenv bootmenu_title "$bootmenu_title       [33m$ver[0m"
++_switch_to_menu=setenv _switch_to_menu ; setenv bootdelay 3 ; setenv bootmenu_delay 3 ; setenv bootmenu_0 $bootmenu_0d ; setenv bootmenu_0d
++_bootmenu_update_title=setenv _bootmenu_update_title
