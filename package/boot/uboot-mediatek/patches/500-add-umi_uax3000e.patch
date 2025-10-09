@@ -13,30 +13,48 @@ Subject: [PATCH] add support for UMI UAX3000E
  create mode 100644 defenvs/umi_uax3000e_env
 
 --- /dev/null
-+++ b/arch/arm/dts/mt7981-umi_uax3000e.dts
-@@ -0,0 +1,76 @@
++++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
+@@ -0,0 +1,214 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
 +#include "mt7981.dtsi"
 +
 +/ {
-+	#address-cells = <2>;
-+	#size-cells = <2>;
 +	model = "UMI UAX3000E";
 +	compatible = "umi,uax3000e", "mediatek,mt7981";
 +
 +	chosen {
-+		stdout-path = &uart0;
-+		tick-timer = &timer0;
++		bootargs = "root=PARTLABEL=rootfs rootwait";
++		stdout-path = "serial0:115200n8";
++	};
++
++	aliases {
++		led-boot = &red_led;
++		led-failsafe = &red_led;
++		led-running = &green_led;
++		led-upgrade = &blue_led;
++		serial0 = &uart0;
++		mmc0 = &mmc0;
 +	};
 +
 +	memory@40000000 {
 +		device_type = "memory";
-+		reg = <0x40000000 0x40000000>;
++		reg = <0 0x40000000 0 0x40000000>;
 +	};
 +
-+	leds {
++	reg_3p3v: regulator-3p3v {
++		compatible = "regulator-fixed";
++		regulator-name = "fixed-3.3V";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-boot-on;
++		regulator-always-on;
++	};
++
++	gpio-leds {
 +		compatible = "gpio-leds";
 +
 +		red_led: led-0 {
@@ -54,10 +72,20 @@ Subject: [PATCH] add support for UMI UAX3000E
 +			gpios = <&pio 35 GPIO_ACTIVE_LOW>;
 +		};
 +	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		reset {
++			label = "reset";
++			linux,code = <KEY_RESTART>;
++			gpios = <&pio 1 GPIO_ACTIVE_LOW>;
++		};
++	};
 +};
 +
 +&pio {
-+	mmc0_pins_default: mmc0default {
++	mmc0_pins_default: mmc0-pins-default {
 +		mux {
 +			function = "flash";
 +			groups = "emmc_45";
@@ -65,17 +93,75 @@ Subject: [PATCH] add support for UMI UAX3000E
 +
 +		conf-cmd-dat {
 +			pins = "SPI0_CLK", "SPI0_MOSI", "SPI0_MISO",
-+				"SPI0_CS", "SPI0_HOLD", "SPI0_WP",
-+				"SPI1_CLK", "SPI1_MOSI", "SPI1_MISO";
++			       "SPI0_CS", "SPI0_HOLD", "SPI0_WP",
++			       "SPI1_CLK", "SPI1_MOSI", "SPI1_MISO";
 +			input-enable;
 +			drive-strength = <MTK_DRIVE_4mA>;
++			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
 +		};
 +
 +		conf-clk {
 +			pins = "SPI1_CS";
 +			drive-strength = <MTK_DRIVE_6mA>;
++			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
 +		};
 +	};
++};
++
++&eth {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++	mediatek,gmac-id = <0>;
++	phy-mode = "2500base-x";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		switch: switch@1f {
++			compatible = "mediatek,mt7531";
++			reg = <31>;
++			reset-gpios = <&pio 39 GPIO_ACTIVE_HIGH>;
++			interrupt-controller;
++			#interrupt-cells = <1>;
++			interrupt-parent = <&pio>;
++			interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
++		};
++
++		int_gbe_phy: ethernet-phy@0 {
++			compatible = "ethernet-phy-id03a2.9461";
++			reg = <0>;
++			phy-mode = "gmii";
++		};
++	};
++
++	fixed-link {
++		speed = <2500>;
++		full-duplex;
++		pause;
++	};
++};
++
++&gmac0 {
++	status = "okay";
++	phy-mode = "2500base-x";
++	mediatek,fixed-link;
++};
++
++&gmac1 {
++	status = "okay";
++	phy-mode = "gmii";
++	phy-handle = <&int_gbe_phy>;
++	mediatek,phy-swap;
++};
++
++&hnat {
++	mtketh-wan = "eth1";
++	mtketh-lan = "eth0";
++	mtketh-max-gmac = <2>;
++	ext-devices-prefix = "usb", "wwan";
++	status = "okay";
 +};
 +
 +&mmc0 {
@@ -87,9 +173,56 @@ Subject: [PATCH] add support for UMI UAX3000E
 +	cap-mmc-highspeed;
 +	cap-mmc-hw-reset;
 +	non-removable;
++	vmmc-supply = <&reg_3p3v>;
 +};
 +
 +&uart0 {
++	mediatek,force-highspeed;
++	status = "okay";
++};
++
++&thermal {
++	status = "okay";
++};
++
++&cpu0 {
++	cooling-min-level = <0>;
++	cooling-max-level = <15>;
++	#cooling-cells = <2>;
++};
++
++&thermal_zones {
++	cpu_thermal: cpu-thermal {
++		polling-delay = <1000>;
++		polling-delay-passive = <250>;
++		thermal-sensors = <&thermal>;
++
++		trips {
++			cpu_active_high: trip-point0 {
++				temperature = <80000>;
++				hysteresis = <2000>;
++				type = "active";
++			};
++		};
++
++		cooling-maps {
++			map0 {
++				trip = <&cpu_active_high>;
++				cooling-device = <&cpu0 5 5>;
++			};
++		};
++	};
++};
++
++&usb_phy {
++	status = "okay";
++};
++
++&xhci {
++	status = "okay";
++};
++
++&watchdog {
 +	status = "okay";
 +};
 --- /dev/null
