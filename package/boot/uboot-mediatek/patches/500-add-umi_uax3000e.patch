@@ -13,7 +13,7 @@ Subject: [PATCH] add support for UMI UAX3000E
  create mode 100644 defenvs/umi_uax3000e_env
 
 --- /dev/null
-+++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
++++ b/arch/arm/dts/mt7981-umi_uax3000e.dts
 @@ -0,0 +1,210 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
