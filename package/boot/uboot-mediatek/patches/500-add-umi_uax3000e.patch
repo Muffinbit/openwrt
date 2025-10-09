@@ -81,7 +81,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 +	non-removable;
 +};
 --- /dev/null
-+++ b/configs/mt7981_umi_uax3000ec_defconfig
++++ b/configs/mt7981_umi_uax3000e_defconfig
 @@ -0,0 +1,51 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_HAS_NONCACHED_MEMORY=y
