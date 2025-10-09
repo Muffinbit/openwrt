@@ -20,10 +20,10 @@ Subject: [PATCH] add support for UMI UAX3000E
 +#include "mt7981.dtsi"
 +
 +/ {
-+	model = "UMI UAX3000E";
-+	compatible = "umi,uax3000e", "mediatek,mt7981";
 +	#address-cells = <2>;
 +	#size-cells = <2>;
++	model = "UMI UAX3000E";
++	compatible = "umi,uax3000e", "mediatek,mt7981";
 +
 +	chosen {
 +		stdout-path = "serial0:115200n8";
@@ -32,7 +32,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 +
 +	memory@40000000 {
 +		device_type = "memory";
-+		reg = <0 0x40000000 0 0x40000000>;
++  reg = <0x0 0x40000000 0x0 0x40000000>;
 +	};
 +
 +	leds {
