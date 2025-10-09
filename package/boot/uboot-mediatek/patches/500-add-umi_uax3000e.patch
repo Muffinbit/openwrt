@@ -4,17 +4,17 @@ Date: Thu, 09 Oct 2025 10:00:00 +0800
 Subject: [PATCH] add support for UMI UAX3000E
 
 ---
- arch/arm/dts/mt7981-umi-uax3000e.dts   |  70 +++++++++++++
+ arch/arm/dts/mt7981-umi-uax3000e.dts   |  72 +++++++++++++
  configs/mt7981_umi_uax3000e_defconfig  |  123 +++++++++++++
  defenvs/umi_uax3000e_env               |  55 ++++++++++++++
- 3 files changed, 248 insertions(+)
+ 3 files changed, 250 insertions(+)
  create mode 100644 arch/arm/dts/mt7981-umi_uax3000e.dts
  create mode 100644 configs/mt7981_umi_uax3000e_defconfig
  create mode 100644 defenvs/umi_uax3000e_env
 
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi_uax3000e.dts
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,72 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include "mt7981.dtsi"
@@ -22,6 +22,8 @@ Subject: [PATCH] add support for UMI UAX3000E
 +/ {
 +	model = "UMI UAX3000E";
 +	compatible = "umi,uax3000e", "mediatek,mt7981";
++	#address-cells = <2>;
++	#size-cells = <2>;
 +
 +	chosen {
 +		stdout-path = "serial0:115200n8";
@@ -30,7 +32,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 +
 +	memory@40000000 {
 +		device_type = "memory";
-+		reg = <0x40000000 0x40000000>;
++		reg = <0 0x40000000 0 0x40000000>;
 +	};
 +
 +	leds {
