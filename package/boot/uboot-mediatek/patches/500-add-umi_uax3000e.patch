@@ -14,7 +14,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi_uax3000e.dts
-@@ -0,0 +1,210 @@
+@@ -0,0 +1,144 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
@@ -143,27 +143,6 @@ Subject: [PATCH] add support for UMI UAX3000E
 +	};
 +};
 +
-+&gmac0 {
-+	status = "okay";
-+	phy-mode = "2500base-x";
-+	mediatek,fixed-link;
-+};
-+
-+&gmac1 {
-+	status = "okay";
-+	phy-mode = "gmii";
-+	phy-handle = <&int_gbe_phy>;
-+	mediatek,phy-swap;
-+};
-+
-+&hnat {
-+	mtketh-wan = "eth1";
-+	mtketh-lan = "eth0";
-+	mtketh-max-gmac = <2>;
-+	ext-devices-prefix = "usb", "wwan";
-+	status = "okay";
-+};
-+
 +&mmc0 {
 +	status = "okay";
 +	pinctrl-names = "default";
@@ -178,51 +157,6 @@ Subject: [PATCH] add support for UMI UAX3000E
 +
 +&uart0 {
 +	mediatek,force-highspeed;
-+	status = "okay";
-+};
-+
-+&thermal {
-+	status = "okay";
-+};
-+
-+&cpu0 {
-+	cooling-min-level = <0>;
-+	cooling-max-level = <15>;
-+	#cooling-cells = <2>;
-+};
-+
-+&thermal_zones {
-+	cpu_thermal: cpu-thermal {
-+		polling-delay = <1000>;
-+		polling-delay-passive = <250>;
-+		thermal-sensors = <&thermal>;
-+
-+		trips {
-+			cpu_active_high: trip-point0 {
-+				temperature = <80000>;
-+				hysteresis = <2000>;
-+				type = "active";
-+			};
-+		};
-+
-+		cooling-maps {
-+			map0 {
-+				trip = <&cpu_active_high>;
-+				cooling-device = <&cpu0 5 5>;
-+			};
-+		};
-+	};
-+};
-+
-+&usb_phy {
-+	status = "okay";
-+};
-+
-+&xhci {
-+	status = "okay";
-+};
-+
-+&watchdog {
 +	status = "okay";
 +};
 --- /dev/null
