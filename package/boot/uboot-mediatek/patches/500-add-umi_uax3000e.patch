@@ -14,7 +14,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,214 @@
+@@ -0,0 +1,209 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include <dt-bindings/gpio/gpio.h>
