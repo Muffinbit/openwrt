@@ -4,17 +4,17 @@ Date: Thu, 09 Oct 2025 10:00:00 +0800
 Subject: [PATCH] add support for UMI UAX3000E
 
 ---
- arch/arm/dts/mt7981-umi-uax3000e.dts   |  65 +++++++++++++
- configs/mt7981_umi_uax3000e_defconfig  |  51 +++++++++++++
- defenvs/umi_uax3000e_env               |  53 ++++++++++++++
- 3 files changed, 169 insertions(+)
+ arch/arm/dts/mt7981-umi-uax3000e.dts   |  70 +++++++++++++
+ configs/mt7981_umi_uax3000e_defconfig  |  53 +++++++++++++
+ defenvs/umi_uax3000e_env               |  55 ++++++++++++++
+ 3 files changed, 178 insertions(+)
  create mode 100644 arch/arm/dts/mt7981-umi-uax3000e.dts
  create mode 100644 configs/mt7981_umi_uax3000e_defconfig
  create mode 100644 defenvs/umi_uax3000e_env
 
 --- /dev/null
 +++ b/arch/arm/dts/mt7981-umi-uax3000e.dts
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,70 @@
 +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 +/dts-v1/;
 +#include "mt7981.dtsi"
@@ -80,9 +80,14 @@ Subject: [PATCH] add support for UMI UAX3000E
 +	cap-mmc-hw-reset;
 +	non-removable;
 +};
++
++&uart0 {
++	mediatek,force-highspeed;
++	status = "okay";
++};
 --- /dev/null
 +++ b/configs/mt7981_umi_uax3000e_defconfig
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,55 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_HAS_NONCACHED_MEMORY=y
 +CONFIG_POSITION_INDEPENDENT=y
@@ -102,6 +107,10 @@ Subject: [PATCH] add support for UMI UAX3000E
 +CONFIG_ENV_OFFSET_REDUND=0x440000
 +CONFIG_PCI=y
 +CONFIG_DEBUG_UART=y
++CONFIG_DEBUG_UART_MTK=y
++CONFIG_BUTTON=y
++CONFIG_BUTTON_GPIO=y
++CONFIG_DM_GPIO=y
 +CONFIG_AHCI=y
 +CONFIG_FIT=y
 +CONFIG_BOOTDELAY=30
