@@ -4,10 +4,10 @@ Date: Thu, 09 Oct 2025 10:00:00 +0800
 Subject: [PATCH] add support for UMI UAX3000E
 
 ---
- arch/arm/dts/mt7981-umi-uax3000e.dts   |  66 +++++++++++++
- configs/mt7981_umi_uax3000e_defconfig  |  50 +++++++++++++
- defenvs/umi_uax3000e_env               |  55 ++++++++++++++
- 3 files changed, 171 insertions(+)
+ arch/arm/dts/mt7981-umi-uax3000e.dts   |  65 +++++++++++++
+ configs/mt7981_umi_uax3000e_defconfig  |  51 +++++++++++++
+ defenvs/umi_uax3000e_env               |  53 ++++++++++++++
+ 3 files changed, 169 insertions(+)
  create mode 100644 arch/arm/dts/mt7981-umi-uax3000e.dts
  create mode 100644 configs/mt7981_umi_uax3000e_defconfig
  create mode 100644 defenvs/umi_uax3000e_env
@@ -82,7 +82,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 +};
 --- /dev/null
 +++ b/configs/mt7981_umi_uax3000ec_defconfig
-@@ -0,0 +1,50 @@
+@@ -0,0 +1,51 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_HAS_NONCACHED_MEMORY=y
 +CONFIG_POSITION_INDEPENDENT=y
@@ -136,7 +136,7 @@ Subject: [PATCH] add support for UMI UAX3000E
 +CONFIG_DEFAULT_ENV_FILE="defenvs/umi_uax3000e_env"
 --- /dev/null
 +++ b/defenvs/umi_uax3000e_env
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,53 @@
 +ipaddr=192.168.1.1
 +serverip=192.168.1.254
 +loadaddr=0x46000000
