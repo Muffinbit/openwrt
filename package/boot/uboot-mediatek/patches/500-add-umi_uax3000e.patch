@@ -5,9 +5,9 @@ Subject: [PATCH] add support for UMI UAX3000E
 
 ---
  arch/arm/dts/mt7981-umi-uax3000e.dts   |  70 +++++++++++++
- configs/mt7981_umi_uax3000e_defconfig  |  53 +++++++++++++
+ configs/mt7981_umi_uax3000e_defconfig  |  56 +++++++++++++
  defenvs/umi_uax3000e_env               |  55 ++++++++++++++
- 3 files changed, 178 insertions(+)
+ 3 files changed, 181 insertions(+)
  create mode 100644 arch/arm/dts/mt7981-umi-uax3000e.dts
  create mode 100644 configs/mt7981_umi_uax3000e_defconfig
  create mode 100644 defenvs/umi_uax3000e_env
@@ -143,6 +143,9 @@ Subject: [PATCH] add support for UMI UAX3000E
 +CONFIG_SYS_RELOC_GD_ENV_ADDR=y
 +CONFIG_USE_DEFAULT_ENV_FILE=y
 +CONFIG_DEFAULT_ENV_FILE="defenvs/umi_uax3000e_env"
++CONFIG_DEBUG_UART_MTK=y
++CONFIG_SYSCON=y
++CONFIG_REGMAP=y
 --- /dev/null
 +++ b/defenvs/umi_uax3000e_env
 @@ -0,0 +1,53 @@
